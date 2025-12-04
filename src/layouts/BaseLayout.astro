@@ -1,0 +1,37 @@
+---
+import "../styles/global.css";
+
+//@ts-ignore ts flags this as an error but it works fine.
+import bgVideo from "../assets/background.mp4";
+
+import Left from "../components/LeftPanel/Left.astro";
+import Card from "../components/Card.astro";
+const { title } = Astro.props;
+---
+
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+  </head>
+
+  <body class="min-h-screen flex items-center justify-center text-white px-4">
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover -z-10"
+    >
+      <source src={bgVideo} type="video/mp4" />
+    </video>
+    <div class="h-full w-full flex items-center justify-center">
+      <Card>
+        <Left />
+        <main>
+          <slot />
+        </main>
+      </Card>
+    </div>
+  </body>
+</html>

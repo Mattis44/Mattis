@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+:root {
+    --theme-bg-color: #10121b66;
+    
+    --border-color: #71779040;
+}

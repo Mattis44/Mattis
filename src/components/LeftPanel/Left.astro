@@ -1,0 +1,52 @@
+---
+import Header from "./Header.astro";
+const CATEGORIES = [
+    {
+        name: "About",
+        icon: "info-circle",
+    },
+    {
+        name: "Skills",
+        icon: "react",
+    },
+    {
+        name: "Projects",
+        icon: "code",
+    },
+    {
+        name: "Jobs",
+        icon: "briefcase",
+    },
+    {
+        name: "Educations",
+        icon: "school",
+    }
+];
+
+const SOCIAL = [
+    {
+        name: "GitHub",
+        icon: "github",
+        href: "https://github.com/Mattis44"
+    },
+    {
+        name: "LinkedIn",
+        icon: "linkedin",
+        href: "https://www.linkedin.com/in/mattis-naud-692836226/"
+    },
+    {
+        name: "Phone",
+        icon: "phone",
+        href: "tel:+33781630953"
+    },
+    {
+        name: "Email",
+        icon: "mail",
+        href: "mailto:mattisnaud@outlook.fr"
+    },
+];
+---
+
+<div class="min-w-[250px] flex flex-col border-r border-(--border-color)">
+    <Header />
+</div>

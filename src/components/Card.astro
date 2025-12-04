@@ -1,0 +1,7 @@
+---
+const { class: extra = "" } = Astro.props;
+---
+
+<div class={`bg-(--theme-bg-color) rounded-lg shadow-lg max-w-5xl w-full min-h-[95vh] flex flex-row backdrop-blur-2xl ${extra}`}>
+    <slot />
+</div>
