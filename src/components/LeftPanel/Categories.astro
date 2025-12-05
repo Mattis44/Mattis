@@ -1,0 +1,40 @@
+---
+import type { SvgComponent } from "astro/types";
+
+type Props = {
+    categories: {
+        name: string;
+        icon: SvgComponent;
+        href?: string;
+    }[];
+    title: string;
+};
+const { categories, title } = Astro.props as Props;
+---
+
+<div class="flex flex-col gap-1">
+    <div class="cursor-pointer">
+        <p
+            class="text-(--category-title-color) hover:text-white transition-colors flex items-center gap-3 font-bold text-lg"
+        >
+            {title}
+        </p>
+    </div>
+    <div class="flex flex-col ml-2">
+        {
+            categories.map((category) => (
+                <a
+                    class="group cursor-pointer flex flex-row gap-4 hover:text-white transition-colors items-center p-3 rounded-md hover:bg-(--category-item-hover-bg-color)"
+                    href={category.href ?? `#${category.name.toLowerCase()}`}
+                >
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <category.icon />
+                    </div>
+                    <p class="text-(--category-item-color) group-hover:text-white flex items-center gap-3 font-medium">
+                        {category.name}
+                    </p>
+                </a>
+            ))
+        }
+    </div>
+</div>

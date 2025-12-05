@@ -1,52 +1,67 @@
 ---
+import Categories from "./Categories.astro";
 import Header from "./Header.astro";
+import About from "../../assets/icons/Left/about.svg";
+import Skills from "../../assets/icons/Left/skills.svg";
+import Projects from "../../assets/icons/Left/projects.svg";
+import Jobs from "../../assets/icons/Left/jobs.svg";
+import Educations from "../../assets/icons/Left/educations.svg";
+import Github from "../../assets/icons/Left/github.svg";
+import Linkedin from "../../assets/icons/Left/linkedin.svg";
+import Phone from "../../assets/icons/Left/phone.svg";
+import Mail from "../../assets/icons/Left/mail.svg";
+
 const CATEGORIES = [
     {
         name: "About",
-        icon: "info-circle",
+        icon: About,
     },
     {
         name: "Skills",
-        icon: "react",
+        icon: Skills,
     },
     {
         name: "Projects",
-        icon: "code",
+        icon: Projects,
     },
     {
         name: "Jobs",
-        icon: "briefcase",
+        icon: Jobs,
     },
     {
         name: "Educations",
-        icon: "school",
-    }
+        icon: Educations,
+    },
 ];
 
 const SOCIAL = [
     {
         name: "GitHub",
-        icon: "github",
-        href: "https://github.com/Mattis44"
+        icon: Github,
+        href: "https://github.com/Mattis44",
     },
     {
         name: "LinkedIn",
-        icon: "linkedin",
-        href: "https://www.linkedin.com/in/mattis-naud-692836226/"
+        icon: Linkedin,
+        href: "https://www.linkedin.com/in/mattis-naud-692836226/",
     },
     {
         name: "Phone",
-        icon: "phone",
-        href: "tel:+33781630953"
+        icon: Phone,
+        href: "tel:+33781630953",
     },
     {
         name: "Email",
-        icon: "mail",
-        href: "mailto:mattisnaud@outlook.fr"
+        icon: Mail,
+        href: "mailto:mattisnaud@outlook.fr",
     },
 ];
 ---
 
 <div class="min-w-[250px] flex flex-col border-r border-(--border-color)">
     <Header />
+    <div class="p-8 w-full flex flex-col gap-2">
+        <Categories categories={CATEGORIES} title="Categories" />
+        <Categories categories={SOCIAL} title="Social" />
+    </div>
 </div>
