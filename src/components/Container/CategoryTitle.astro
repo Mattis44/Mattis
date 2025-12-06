@@ -1,0 +1,10 @@
+---
+const { title } = Astro.props;
+---
+
+<h4 class="text-2xl font-semibold mb-4 relative inline-block">
+    {title}
+    <span
+        class="absolute left-0 -bottom-1 w-full h-0.5 bg-linear-to-r from-white/40 to-transparent"
+    ></span>
+</h4>

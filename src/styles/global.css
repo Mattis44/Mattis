@@ -1,45 +1,45 @@
 @import "tailwindcss";
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 :root {
-    --default-font-family: 'Roboto', sans-serif;
+  --default-font-family: 'Roboto', sans-serif;
 
-    --theme-bg-color: #10121b66;
+  --theme-bg-color: #10121b66;
 
-    --border-color: #71779040;
+  --border-color: #71779040;
 
-    --category-title-color: #bfbfbf;
-    --category-item-color: #e0e0e0;
-    --category-item-hover-bg-color: #2d2f3a79;
+  --category-title-color: #bfbfbf;
+  --category-item-color: #e0e0e0;
+  --category-item-hover-bg-color: #2d2f3a79;
 
-    --desc-card-shadow: 0 4px 30px rgba(16, 18, 27, 0.66);
+  --desc-card-shadow: 0 4px 30px rgba(16, 18, 27, 0.66);
 
-    --skill-bg-color: #1e1f2a46;
+  --skill-bg-color: #1e1f2a46;
 }
 
 @layer utilities {
-    .animate-bg {
-        background: linear-gradient(90deg, #d8b4fe, #a78bfa, #818cf8);
-        background-size: 300% 300%;
-        animation: gradientShift 6s ease infinite;
+  .animate-bg {
+    background: linear-gradient(90deg, #d8b4fe, #a78bfa, #818cf8);
+    background-size: 300% 300%;
+    animation: gradientShift 6s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
     }
 
-    @keyframes gradientShift {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
+    50% {
+      background-position: 100% 50%;
     }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 }
 
 @layer utilities {
@@ -64,12 +64,10 @@ html {
     inset: 0;
     top: 0;
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.8),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent);
     pointer-events: none;
   }
 
@@ -80,12 +78,10 @@ html {
     top: 0;
     width: 1px;
     height: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.8),
-      transparent,
-      rgba(255, 255, 255, 0.3)
-    );
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.8),
+        transparent,
+        rgba(255, 255, 255, 0.3));
     pointer-events: none;
   }
 }
@@ -115,4 +111,28 @@ html {
 
 .glass-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
+}
+
+.frost-3d {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255,255,255,0.9),
+    rgba(255,255,255,0.5)
+  );
+  background-size: 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: frost-move 5s ease-in-out infinite;
+
+  text-shadow:
+    0 1px 2px rgba(255,255,255,0.6),
+    0 -1px 2px rgba(0,0,0,0.2),
+    0 2px 4px rgba(0,0,0,0.15);
+}
+
+@keyframes frost-move {
+  0%, 100% { background-position: 0%; }
+  50% { background-position: 100%; }
 }

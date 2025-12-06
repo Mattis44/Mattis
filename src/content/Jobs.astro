@@ -1,3 +1,21 @@
+---
+import { getCollection, render } from "astro:content";
+import JobCard from "../components/Container/JobCard.astro";
+import CategoryTitle from "../components/Container/CategoryTitle.astro";
+
+const entries = await getCollection("jobs");
+const jobs = await Promise.all(
+    entries.map(async (entry) => {
+        const { Content } = await render(entry);
+        return { frontmatter: entry.data, Content };
+    }),
+);
+---
+
 <section class="my-8" id="jobs">
-    <h4 class="text-2xl font-semibold mb-4">Jobs</h4>
+    <CategoryTitle title="Jobs" />
+
+    <div class="space-y-8">
+        {jobs.map((job) => <JobCard job={job} />)}
+    </div>
 </section>
