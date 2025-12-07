@@ -1,40 +1,45 @@
 ---
 import { diffInYearsAndMonths } from "../../utils/date.js";
+import TiltWrapper from "../TiltWrapper.astro";
 const { education } = Astro.props;
 const start = education.frontmatter.startDate;
 const end = education.frontmatter.endDate || new Date();
 const duration = diffInYearsAndMonths(start, end);
 ---
 
-<article class="glass-card p-6 rounded-xl">
-  <header class="flex items-center gap-4 mb-4">
-    <img src={education.frontmatter.logo} class="w-12 h-12 rounded-md" />
-    <div>
-      <div class="flex items-center gap-2">
-        <h3 class="text-xl font-semibold">
-          {education.frontmatter.school}
-        </h3>
-        <span
-          class="text-[10px] uppercase tracking-wide
+<TiltWrapper class="w-full">
+  <article class="glass-card p-6 rounded-xl">
+    <header class="flex items-center gap-4 mb-4">
+      <img src={education.frontmatter.logo} class="w-12 h-12 rounded-md" />
+      <div>
+        <div class="flex items-center gap-2">
+          <h3 class="text-xl font-semibold">
+            {education.frontmatter.school}
+          </h3>
+          <span
+            class="text-[10px] uppercase tracking-wide
                text-white/40 bg-white/5 px-2 py-0.5 rounded-md"
-        >
-          {education.frontmatter.fieldOfStudy}
+          >
+            {education.frontmatter.fieldOfStudy}
+          </span>
+        </div>
+        <p class="text-white/70">
+          {education.frontmatter.degree}
+        </p>
+        <p class="text-sm text-white/70">
+          {education.frontmatter.location}
+        </p>
+        <span class="text-xs text-white/40">
+          {start} ― {education.frontmatter.endDate || "Present"} ({
+            duration.years
+          }
+          yr{duration.years !== 1 ? "s" : ""}, {duration.months} mo)
         </span>
       </div>
-      <p class="text-white/70">
-        {education.frontmatter.degree}
-      </p>
-       <p class="text-sm text-white/70">
-        {education.frontmatter.location}
-      </p>
-      <span class="text-xs text-white/40">
-        {start} ― {education.frontmatter.endDate || "Present"} ({duration.years}
-        yr{duration.years !== 1 ? "s" : ""}, {duration.months} mo)
-      </span>
-    </div>
-  </header>
+    </header>
 
-  <div class="prose prose-invert">
-    <education.Content />
-  </div>
-</article>
+    <div class="prose prose-invert">
+      <education.Content />
+    </div>
+  </article>
+</TiltWrapper>

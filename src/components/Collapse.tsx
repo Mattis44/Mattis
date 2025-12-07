@@ -19,6 +19,7 @@ export default function Collapse({ title = "Details", children }: CollapseProps)
           bg-white/10 hover:bg-white/15
           border border-white/20 backdrop-blur
           transition-all duration-200
+          cursor-pointer
         "
             >
                 <span className="font-medium text-white">{title}</span>

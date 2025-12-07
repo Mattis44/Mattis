@@ -4,7 +4,29 @@ import Header from "./Header.astro";
 
 <div class="flex flex-col w-[inherit]">
     <Header />
-    <div class="flex-1 p-6 glass-scroll max-w-full overflow-y-auto overflow-x-hidden">
+    <div
+        class="flex-1 p-6 glass-scroll max-w-full overflow-y-auto overflow-x-hidden"
+    >
         <slot />
     </div>
 </div>
+
+<script src="https://unpkg.com/lenis@1.3.15/dist/lenis.min.js"></script> 
+<script is:inline type="module">
+    
+    const container = document.querySelector(".glass-scroll");
+
+    const lenis = new Lenis({
+        wrapper: container,
+        content: container,
+        smoothWheel: true,
+        duration: 2,
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+</script>

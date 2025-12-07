@@ -1,4 +1,5 @@
 ---
+import TiltWrapper from "../TiltWrapper.astro";
 import { diffInYearsAndMonths } from "../../utils/date.js";
 const { job } = Astro.props;
 const start = job.frontmatter.startDate;
@@ -6,25 +7,24 @@ const end = job.frontmatter.endDate || new Date();
 const duration = diffInYearsAndMonths(start, end);
 ---
 
-<article class="glass-card p-6 rounded-xl">
-  <header class="flex items-center gap-4 mb-4">
-    <img src={job.frontmatter.logo} class="w-12 h-12 rounded-md" />
-    <div>
-      <h3 class="text-xl font-semibold">
-        {job.frontmatter.company}
-      </h3>
-      <p class="text-white/70">
-        {job.frontmatter.position}
-      </p>
-      <span class="text-xs text-white/40">
-        {start} ― {job.frontmatter.endDate || "Present"} ({duration.years} yr{
-          duration.years !== 1 ? "s" : ""
-        }, {duration.months} mo)
-      </span>
-    </div>
-  </header>
+<TiltWrapper class="w-full">
+  <article class="glass-card p-6 rounded-xl overflow-hidden">
+    <header class="flex items-center gap-4 mb-4">
+      <img src={job.frontmatter.logo} class="w-12 h-12 rounded-md" />
+      <div>
+        <a class="text-xl font-semibold underline" href={job.frontmatter.href}>
+          {job.frontmatter.company}
+        </a>
+        <p class="text-white/70">{job.frontmatter.position}</p>
+        <span class="text-xs text-white/40">
+          {start} ― {job.frontmatter.endDate || "Present"}
+          ({duration.years} yr{duration.years !== 1 ? "s" : ""}, {duration.months} mo)
+        </span>
+      </div>
+    </header>
 
-  <div class="prose prose-invert">
-    <job.Content />
-  </div>
-</article>
+    <div class="prose prose-invert">
+      <job.Content />
+    </div>
+  </article>
+</TiltWrapper>
