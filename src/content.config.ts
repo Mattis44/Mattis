@@ -13,4 +13,18 @@ const jobs = defineCollection({
   })
 });
 
-export const collections = { jobs };
+const educations = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/educations" }),
+  schema: z.object({
+    school: z.string(),
+    location: z.string(),
+    logo: z.string(),
+    degree: z.string(),
+    fieldOfStudy: z.string(),
+    startDate: z.string(),
+    endDate: z.string().nullable(),
+    href: z.string(),
+  })
+});
+
+export const collections = { jobs, educations };
