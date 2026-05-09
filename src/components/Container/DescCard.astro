@@ -1,5 +1,11 @@
 ---
-
+const birthDate = new Date(2003, 10, 12);
+const today = new Date();
+let age = today.getFullYear() - birthDate.getFullYear();
+const monthDiff = today.getMonth() - birthDate.getMonth();
+if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+}
 ---
 
 <section id="about" class="relative w-full rounded-3xl p-0 overflow-hidden">
@@ -9,7 +15,7 @@
         class="relative z-10 glass-card flex flex-row items-center justify-center p-6"
     >
         <div class="flex flex-col">
-            <h2 class="text-2xl font-bold mb-4">Mattis NAUD ● 22'</h2>
+            <h2 class="text-2xl font-bold mb-4">Mattis NAUD ● {age}'</h2>
             <p class="text-lg text-(--text-secondary-color)">
                 Full Stack Web Developer with 4+ years of experience in building
                 scalable web applications. Proficient in JavaScript, TypeScript,

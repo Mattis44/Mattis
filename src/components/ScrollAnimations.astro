@@ -1,0 +1,81 @@
+---
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const scroller = document.querySelector('.glass-scroll') as Element;
+
+  scroller.addEventListener('scroll', () => ScrollTrigger.update());
+
+  gsap.set('#about', { autoAlpha: 0, y: 30 });
+  gsap.set('[data-scroll="title"]', { autoAlpha: 0, x: -20 });
+  gsap.set('[data-scroll="skill"]', { autoAlpha: 0, y: 24 });
+  gsap.set('[data-scroll="card"]', { autoAlpha: 0, y: 40 });
+  gsap.set('[data-scroll="final"]', { autoAlpha: 0, y: 20 });
+
+  const st = (trigger: Element | string) => ({
+    scroller,
+    trigger,
+    start: 'top 80%',
+    once: true,
+  });
+
+  gsap.to('#about', {
+    autoAlpha: 1,
+    y: 0,
+    duration: 0.7,
+    ease: 'power3.out',
+    scrollTrigger: st('#about'),
+  });
+
+  document.querySelectorAll<Element>('[data-scroll="title"]').forEach((el) => {
+    gsap.to(el, {
+      autoAlpha: 1,
+      x: 0,
+      duration: 0.5,
+      ease: 'power3.out',
+      scrollTrigger: st(el),
+    });
+  });
+
+  ScrollTrigger.batch('[data-scroll="skill"]', {
+    scroller,
+    start: 'top 80%',
+    once: true,
+    onEnter: (els) =>
+      gsap.to(els, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.04,
+        ease: 'power3.out',
+      }),
+  });
+
+  document.querySelectorAll<Element>('[data-scroll="card"]').forEach((el) => {
+    gsap.to(el, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+      scrollTrigger: st(el),
+    });
+  });
+
+  gsap.to('[data-scroll="final"]', {
+    autoAlpha: 1,
+    y: 0,
+    duration: 0.6,
+    ease: 'power3.out',
+    scrollTrigger: {
+      scroller,
+      trigger: '[data-scroll="final"]',
+      start: 'top bottom',
+      once: true,
+    },
+  });
+</script>

@@ -1,0 +1,198 @@
+---
+---
+
+<div id="intro-loader">
+  <div class="panel panel-top"></div>
+  <div class="panel panel-bottom"></div>
+
+  <div class="loader-content">
+    <div class="name-block">
+      <h1 class="loader-name">Mattis.</h1>
+      <p class="loader-role">Full Stack Developer</p>
+    </div>
+  </div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+</div>
+
+<style>
+  #intro-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  .panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: #0c0d16;
+    will-change: transform;
+  }
+  .panel-top {
+    top: 0;
+    height: 50.1%;
+    transform-origin: top;
+  }
+  .panel-bottom {
+    bottom: 0;
+    height: 50.1%;
+    transform-origin: bottom;
+  }
+
+  .loader-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .name-block {
+    text-align: center;
+    color: #f5f3ee;
+  }
+
+  .loader-name {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  .loader-role {
+    font-size: clamp(0.7rem, 1.8vw, 0.875rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245, 243, 238, 0.5);
+    margin: 1rem 0 0;
+  }
+
+  .corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    z-index: 2;
+  }
+
+  .tl { top: 1.75rem; left: 1.75rem; border-top: 1px solid rgba(245,243,238,0.22); border-left: 1px solid rgba(245,243,238,0.22); }
+  .tr { top: 1.75rem; right: 1.75rem; border-top: 1px solid rgba(245,243,238,0.22); border-right: 1px solid rgba(245,243,238,0.22); }
+  .bl { bottom: 1.75rem; left: 1.75rem; border-bottom: 1px solid rgba(245,243,238,0.22); border-left: 1px solid rgba(245,243,238,0.22); }
+  .br { bottom: 1.75rem; right: 1.75rem; border-bottom: 1px solid rgba(245,243,238,0.22); border-right: 1px solid rgba(245,243,238,0.22); }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+
+  gsap.registerPlugin(SplitText);
+
+  document.body.style.overflow = 'hidden';
+
+  const nameSplit = SplitText.create('.loader-name', {
+    type: 'chars',
+    mask: 'chars',
+  });
+
+  (nameSplit.chars[nameSplit.chars.length - 1] as HTMLElement).style.color = '#7f77dd';
+
+  const roleSplit = SplitText.create('.loader-role', {
+    type: 'lines',
+    mask: 'lines',
+  });
+
+  const cleanup = () => {
+    document.getElementById('intro-loader')?.remove();
+    document.body.style.overflow = '';
+  };
+
+  gsap.matchMedia().add(
+    {
+      full: '(prefers-reduced-motion: no-preference)',
+      reduced: '(prefers-reduced-motion: reduce)',
+    },
+    (ctx) => {
+      const { reduced } = (ctx.conditions as Record<string, boolean>);
+
+      if (reduced) {
+        gsap.timeline({ onComplete: cleanup })
+          .to('.panel-top', { yPercent: -100, duration: 0.4, ease: 'power2.inOut' })
+          .to('.panel-bottom', { yPercent: 100, duration: 0.4, ease: 'power2.inOut' }, '<')
+          .set('#app', { autoAlpha: 1, clearProps: 'all' });
+        return;
+      }
+
+      gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete: cleanup,
+      })
+        .from('.corner', { autoAlpha: 0, duration: 0.4, stagger: 0.07 }, 0.05)
+
+        .from(nameSplit.chars, {
+          y: '110%',
+          duration: 1,
+          stagger: 0.07,
+          ease: 'power4.out',
+        }, 0.1)
+
+        .from(roleSplit.lines, { y: '100%', duration: 0.7 }, 0.55)
+
+        .to({}, { duration: 0.55 })
+
+        .to('.loader-content, .corner', {
+          autoAlpha: 0,
+          duration: 0.4,
+          ease: 'power2.in',
+        })
+
+        .to('.panel-top', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '-=0.15')
+        .to('.panel-bottom', { yPercent: 100, duration: 1.1, ease: 'expo.inOut' }, '<')
+
+        .fromTo('#app',
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.35, clearProps: 'opacity,visibility' },
+          '-=0.65'
+        )
+
+        .fromTo('#app',
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.35, clearProps: 'opacity,visibility' },
+          '-=0.65'
+        )
+
+        .fromTo('#main-card',
+          { autoAlpha: 0, scale: 0.88, filter: 'blur(14px)' },
+          { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 1.0, ease: 'expo.out', clearProps: 'all' },
+          '-=0.1'
+        )
+
+        .from('#left-panel-header .rounded-full', {
+          scale: 0,
+          duration: 0.45,
+          stagger: 0.08,
+          ease: 'back.out(2.5)',
+        }, '-=0.5')
+
+        .from('#left-panel .font-bold', {
+          autoAlpha: 0,
+          x: -12,
+          duration: 0.35,
+          stagger: 0.12,
+        }, '-=0.3')
+
+        .from('#left-panel a', {
+          autoAlpha: 0,
+          x: -16,
+          duration: 0.3,
+          stagger: 0.04,
+        }, '-=0.25');
+    }
+  );
+</script>
