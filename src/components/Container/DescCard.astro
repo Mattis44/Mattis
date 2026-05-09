@@ -15,7 +15,7 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
         class="relative z-10 glass-card flex flex-row items-center justify-center p-6"
     >
         <div class="flex flex-col">
-            <h2 class="text-2xl font-bold mb-4">Mattis NAUD ● {age}'</h2>
+            <h2 id="about-name" data-cursor-hover class="text-2xl font-bold mb-4 cursor-pointer select-none">Mattis NAUD ● {age}'</h2>
             <p class="text-lg text-(--text-secondary-color)">
                 Full Stack Web Developer with 4+ years of experience in building
                 scalable web applications. Proficient in JavaScript, TypeScript,
@@ -34,3 +34,30 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
             class="w-48 h-48 ml-6"></lottie-player>
     </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+
+  gsap.registerPlugin(ScrambleTextPlugin);
+
+  const el = document.getElementById('about-name') as HTMLElement;
+  const original = el.textContent ?? '';
+  let running = false;
+
+  el.addEventListener('mouseenter', () => {
+    if (running) return;
+    running = true;
+    gsap.to(el, {
+      duration: 1.1,
+      ease: 'none',
+      scrambleText: {
+        text: original,
+        chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        revealDelay: 0.25,
+        speed: 0.65,
+      },
+      onComplete: () => { running = false; },
+    });
+  });
+</script>

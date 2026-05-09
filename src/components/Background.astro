@@ -18,29 +18,45 @@
   const canvas = document.getElementById('dot-grid') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d')!;
 
-  const SPACING      = 28;
-  const WAVE_SCALE   = 0.006;
-  const WAVE_SPEED   = 0.0012;
-  const BASE_OPACITY = 0.15;
-  const PEAK_OPACITY = 0.5;
-  const MOUSE_RADIUS = 140;
-  const MOUSE_BOOST  = 0.9;
+  const SPACING        = 28;
+  const WAVE_SCALE     = 0.006;
+  const WAVE_SPEED     = 0.0012;
+  const BASE_OPACITY   = 0.15;
+  const PEAK_OPACITY   = 0.5;
+  const MOUSE_RADIUS   = 140;
+  const MOUSE_BOOST    = 0.9;
+  const RIPPLE_SPEED   = 5;
+  const RIPPLE_WIDTH   = 36;
+  const RIPPLE_BOOST   = 1.1;
+
+  type Ripple = { x: number; y: number; r: number; maxR: number };
 
   let w = 0, h = 0, t = 0;
   let mx = -9999, my = -9999;
+  let maxR = 0;
+  const ripples: Ripple[] = [];
 
   const resize = () => {
     w = canvas.width  = window.innerWidth;
     h = canvas.height = window.innerHeight;
+    maxR = Math.sqrt(w * w + h * h);
   };
 
   window.addEventListener('resize', resize);
   window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
   window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
+  window.addEventListener('click', (e) => {
+    ripples.push({ x: e.clientX, y: e.clientY, r: 0, maxR });
+  });
 
   const draw = () => {
     ctx.clearRect(0, 0, w, h);
     t += WAVE_SPEED;
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      ripples[i].r += RIPPLE_SPEED;
+      if (ripples[i].r > ripples[i].maxR) ripples.splice(i, 1);
+    }
 
     const cols = Math.ceil(w / SPACING) + 1;
     const rows = Math.ceil(h / SPACING) + 1;
@@ -61,9 +77,21 @@
           ? MOUSE_BOOST * Math.exp(-(dist * dist) / (2 * sigma * sigma))
           : 0;
 
+        let rippleFactor = 0;
+        for (const rip of ripples) {
+          const dr = Math.sqrt((x - rip.x) ** 2 + (y - rip.y) ** 2);
+          const ring = Math.abs(dr - rip.r);
+          if (ring < RIPPLE_WIDTH) {
+            const strength = 1 - ring / RIPPLE_WIDTH;
+            const decay = 1 - rip.r / rip.maxR;
+            rippleFactor += RIPPLE_BOOST * strength * decay;
+          }
+        }
+
+        const boost = mouseFactor + rippleFactor;
         ctx.beginPath();
-        ctx.arc(x, y, 1.2 + mouseFactor * 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 175, 255, ${Math.min(1, waveOpacity + mouseFactor)})`;
+        ctx.arc(x, y, 1.2 + boost * 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180, 175, 255, ${Math.min(1, waveOpacity + boost)})`;
         ctx.fill();
       }
     }

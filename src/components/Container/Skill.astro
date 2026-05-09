@@ -11,6 +11,7 @@ const { name, icon: IconComponent, level } = Astro.props as Props;
 
 <div
     data-scroll="skill"
+    data-skill-badge
     class="flex flex-col items-center justify-center w-28 h-28 bg-(--skill-bg-color) rounded-2xl p-4 gap-1 glass-card"
 >
     <IconComponent />
@@ -24,3 +25,45 @@ const { name, icon: IconComponent, level } = Astro.props as Props;
         {level}
     </span>
 </div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const REPEL_RADIUS   = 150;
+  const REPEL_STRENGTH = 16;
+
+  const badges = () => document.querySelectorAll<HTMLElement>('[data-skill-badge]');
+
+  window.addEventListener('mousemove', (e) => {
+    badges().forEach((badge) => {
+      const rect = badge.getBoundingClientRect();
+      const ox = (gsap.getProperty(badge, 'x') as number) || 0;
+      const oy = (gsap.getProperty(badge, 'y') as number) || 0;
+      const cx = rect.left + rect.width  / 2 - ox;
+      const cy = rect.top  + rect.height / 2 - oy;
+
+      const dx   = cx - e.clientX;
+      const dy   = cy - e.clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < REPEL_RADIUS && dist > 0) {
+        const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
+        gsap.to(badge, {
+          x: (dx / dist) * force,
+          y: (dy / dist) * force,
+          duration: 0.4,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+      } else {
+        gsap.to(badge, {
+          x: 0,
+          y: 0,
+          duration: 0.7,
+          ease: 'elastic.out(1, 0.35)',
+          overwrite: 'auto',
+        });
+      }
+    });
+  });
+</script>

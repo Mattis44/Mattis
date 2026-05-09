@@ -78,4 +78,37 @@
       once: true,
     },
   });
+
+  const navIndicator = document.getElementById('nav-indicator') as HTMLElement | null;
+  const navLinks = document.getElementById('nav-links') as HTMLElement | null;
+
+  const setActiveSection = (sectionId: string) => {
+    if (!navIndicator || !navLinks) return;
+    const link = navLinks.querySelector<HTMLElement>(`[data-nav-link="${sectionId}"]`);
+    if (!link) return;
+
+    navLinks.querySelectorAll('[data-nav-link]').forEach((el) => el.classList.remove('is-nav-active'));
+    link.classList.add('is-nav-active');
+
+    gsap.to(navIndicator, {
+      y: link.offsetTop + 4,
+      height: link.offsetHeight - 8,
+      autoAlpha: 1,
+      duration: 0.4,
+      ease: 'power3.out',
+    });
+  };
+
+  ['about', 'skills', 'jobs', 'educations'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ScrollTrigger.create({
+      scroller,
+      trigger: el,
+      start: 'top 50%',
+      end: 'bottom 50%',
+      onEnter: () => setActiveSection(id),
+      onEnterBack: () => setActiveSection(id),
+    });
+  });
 </script>
