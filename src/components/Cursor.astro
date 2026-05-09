@@ -1,0 +1,95 @@
+---
+---
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<style>
+  #cursor-dot,
+  #cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    translate: -50% -50%;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  #cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+  }
+
+  #cursor-ring {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+
+  #cursor-ring.is-hovering {
+    width: 48px;
+    height: 48px;
+    border-color: rgba(180, 175, 255, 0.7);
+    background: rgba(127, 119, 221, 0.08);
+  }
+
+  #cursor-dot.is-clicking {
+    transform: scale(0.5);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const dot  = document.getElementById('cursor-dot')!;
+  const ring = document.getElementById('cursor-ring')!;
+
+  const dotX  = gsap.quickTo(dot,  'x', { duration: 0.1 });
+  const dotY  = gsap.quickTo(dot,  'y', { duration: 0.1 });
+  const ringX = gsap.quickTo(ring, 'x', { duration: 0.5, ease: 'power3' });
+  const ringY = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3' });
+
+  let visible = false;
+  const show = () => {
+    if (visible) return;
+    visible = true;
+    gsap.to([dot, ring], { opacity: 1, duration: 0.3 });
+  };
+
+  window.addEventListener('mousemove', (e) => {
+    show();
+    dotX(e.clientX);
+    dotY(e.clientY);
+    ringX(e.clientX);
+    ringY(e.clientY);
+  });
+
+  window.addEventListener('mouseleave', () => {
+    gsap.to([dot, ring], { opacity: 0, duration: 0.3 });
+    visible = false;
+  });
+
+  const interactives = 'a, button, [data-cursor-hover]';
+
+  document.addEventListener('mouseover', (e) => {
+    if ((e.target as Element).closest(interactives)) {
+      ring.classList.add('is-hovering');
+      gsap.to(dot, { opacity: 0, duration: 0.2 });
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if ((e.target as Element).closest(interactives)) {
+      ring.classList.remove('is-hovering');
+      gsap.to(dot, { opacity: 1, duration: 0.2 });
+    }
+  });
+
+  window.addEventListener('mousedown', () => dot.classList.add('is-clicking'));
+  window.addEventListener('mouseup',   () => dot.classList.remove('is-clicking'));
+</script>
